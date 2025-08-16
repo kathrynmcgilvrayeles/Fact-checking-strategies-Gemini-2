@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Verify AI Information — Image Select Activity</title>
+  <title>AI Verification Learning Activity</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,19 +15,16 @@
       --teal:#00bec7;
       --light:#d2f0f0;
       --darker:#2e4d6b;
+      --bg-light-grey:#f2f4f7;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--blue);
-      background:#fff;
+      background:var(--bg-light-grey);
     }
-    .wrap{
-      max-width:1200px;
-      margin:24px auto;
-      padding:16px;
-    }
+    .wrap{ max-width:1200px; margin:24px auto; padding:16px; }
     .activity{
       display:grid;
       grid-template-columns: 1.4fr 1fr;
@@ -36,35 +32,28 @@
       align-items:start;
     }
     @media (max-width: 920px){
-      .activity{
-        grid-template-columns:1fr;
-      }
+      .activity{ grid-template-columns:1fr; }
     }
     .panel{
-      background:var(--light);
+      background:#fff;
       border:1px solid var(--grey);
       border-radius:14px;
       padding:20px 22px;
       box-shadow:0 2px 10px rgba(0,0,0,.04);
       min-height:360px;
+      display: flex; /* Use flexbox for internal layout */
+      flex-direction: column; /* Stack content vertically */
     }
     h1{
-      font-size:20px;
+      font-size:22px;
       margin:4px 0 14px;
       color:var(--darker);
     }
     .lead{
       font-size:14px;
-      margin:0 0 16px;
+      margin:0 0 10px;
       color:#20324a;
-    }
-    .panel img.context{
-      display:block;
-      max-width:100%;
-      height:auto;
-      border-radius:12px;
-      border:1px solid var(--grey);
-      margin-top:14px;
+      line-height:1.55;
     }
     .grid{
       display:grid;
@@ -74,15 +63,10 @@
       justify-content:center;
     }
     @media (max-width: 560px){
-      .grid{
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 210px;
-      }
+      .grid{ grid-template-columns: repeat(2, 1fr); grid-auto-rows: 210px; }
     }
     @media (max-width: 380px){
-      .grid{
-        grid-template-columns: 1fr;
-      }
+      .grid{ grid-template-columns: 1fr; }
     }
     .thumb{
       position:relative;
@@ -97,19 +81,21 @@
     }
     .thumb:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.12); border-color:var(--teal); }
     .thumb[aria-selected="true"]{ border-color:var(--pink); box-shadow:0 0 0 3px rgba(231,37,130,.15) inset; }
-    .thumb img{
-      width:100%; height:100%; object-fit:cover; display:block;
-    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
     .label{
       position:absolute; left:8px; right:8px; bottom:8px;
       background:rgba(31,42,82,.86);
       color:#fff; font-size:12px; font-weight:600;
-      padding:6px 8px; border-radius:10px;
-      line-height:1.2;
+      padding:6px 8px; border-radius:10px; line-height:1.2;
     }
-    a{ color:var(--teal); }
-    ul{ margin:0 0 10px 18px; }
-    li{ margin:6px 0; }
+    /* Style for the image inside the content panel */
+    #contentImage {
+      max-width: 100%;
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 8px;
+      margin-top: 15px; /* Spacing from the text */
+      display: none; /* Hidden by default, shown by JS if data-image exists */
+    }
   </style>
 </head>
 <body>
@@ -118,42 +104,97 @@
       <section class="panel" id="contentPanel" aria-live="polite">
         <h1 id="contentTitle"></h1>
         <p class="lead" id="contentBody"></p>
-        <img class="context" id="contentImage" alt="">
+        <!-- New image element for the content panel -->
+        <img id="contentImage" src="" alt="Associated illustration" />
       </section>
-      <nav class="grid" aria-label="Verification activities">
-        <button class="thumb" aria-selected="false" data-title="Reverse Search or Keyword Search" data-content='<ul><li>Copy and paste specific phrases, names, or statistics from the AI&apos;s output into another search engine.</li><li>Add terms like <strong>&ldquo;fact check&rdquo;</strong>, <strong>&ldquo;provide the source&rdquo;</strong>, <strong>&ldquo;is it true&rdquo;</strong>, <strong>&ldquo;hoax&rdquo;</strong>, or <strong>&ldquo;debunked&rdquo;</strong> to your queries.</li><li>Gemini provides superscript numbers at the end of facts that link to its sources or references.</li></ul>' data-below="Reverse Search or Keyword Search 1.png"><img src="Reverse Search or Keyword Search.png" alt=""><span class="label">Reverse Search or Keyword Search</span></button>
-        <button class="thumb" aria-selected="false" data-title="Reputable Sources" data-content='<p>When verifying information, consult reputable sources such as academic databases (e.g., Google Scholar, PubMed, JSTOR) and university libraries.</p><p>Official Australian government websites, including the ABS and state/territory health departments, also provide reliable data.</p><p>Seek insights from industry experts, professional organisations, industry associations, and dedicated Australian fact-checking organisations such as <em>RMIT ABC Fact Check</em>.</p>' data-below="Reputable Sources.png"><img src="Reputable Sources.png" alt=""><span class="label">Reputable Sources</span></button>
-        <button class="thumb" aria-selected="false" data-title="Misinterpretations" data-content='<p>AI might accurately summarise a concept but misinterpret its nuances or present a biased version.</p><p>Always check that the summary reflects the original intent or meaning.</p>' data-below="Misinterpretations 1.png"><img src="Misinterpretations.png" alt=""><span class="label">Misinterpretations</span></button>
-        <button class="thumb" aria-selected="false" data-title="Verify Statistics and Data" data-content='<ul><li>Find the original source of any statistic and check its context, date, and methodology.</li><li>Look for footnotes, citations, or references—and confirm they actually support the claim.</li><li>Be aware: AI can sometimes &ldquo;hallucinate&rdquo; citations.</li></ul>' data-below="Verify Statistics and Data 1.png"><img src="Verify Statistics and Data.png" alt=""><span class="label">Verify Statistics and Data</span></button>
-        <button class="thumb" aria-selected="false" data-title="Examine Citations" data-content='<ul><li>If the AI provides citations (URLs, book titles, author names), manually check each one.</li><li>Do the links work? Do the sources actually contain the claimed information? Are they legitimate publications?</li></ul>' data-below="Examine Citations 1.png"><img src="Examine Citations.png" alt=""><span class="label">Examine Citations</span></button>
+
+      <nav class="grid" aria-label="AI verification methods">
+        <button class="thumb" aria-selected="false"
+          data-title="Reverse Search or Keyword Search"
+          data-content="Copy and paste specific phrases, names, or statistics from the AI's output into another search engine. Add terms like 'fact check,' “provide the source”, 'is it true,' 'hoax,' or 'debunked' to your search queries. Copilot provides the small numbers at the end of the facts that will take you to the site where it obtained the information. See the numbers at the end of the sentence."
+          data-image="Reverse Search or Keyword Search_1.png"> <!-- Added data-image -->
+          <img src="Reverse Search or Keyword Search.png" alt="Reverse Search or Keyword Search icon">
+          <span class="label">Reverse Search or Keyword Search</span>
+        </button>
+
+        <button class="thumb" aria-selected="false"
+          data-title="Reputable Sources"
+          data-content="When verifying information, consult reputable sources such as academic databases like Google Scholar, PubMed, and JSTOR, along with university libraries. Official Australian government websites, including the ABS and those for health departments, also provide reliable data. Additionally, seek insights from industry experts, professional organisations, industry associations and dedicated Australian fact-checking organisations such as RMIT ABC Fact Check to ensure accuracy."
+          data-image=""> <!-- No corresponding image for this, so data-image is empty -->
+          <img src="Reputable Sources.png" alt="Reputable Sources icon">
+          <span class="label">Reputable Sources</span>
+        </button>
+
+        <button class="thumb" aria-selected="false"
+          data-title="Misinterpretations"
+          data-content="AI might accurately summarise a concept but misinterpret its nuances or present a biased version. Ensure the AI's summary accurately reflects the original intent or meaning."
+          data-image="Misinterpretations 1.png"> <!-- Added data-image -->
+          <img src="Misinterpretations.png" alt="Misinterpretations icon">
+          <span class="label">Misinterpretations</span>
+        </button>
+
+        <button class="thumb" aria-selected="false"
+          data-title="Verify Statistics and Data"
+          data-content="Always look for the original source of statistics. An AI might present a statistic, but verifying its context, date, and methodology is crucial. Check for footnotes, citations, or references provided by the AI and verify if they actually support the claim. Often, AI might 'hallucinate' citations."
+          data-image="Verify Statistics and Data 1.png"> <!-- Added data-image -->
+          <img src="Verify Statistics and Data.png" alt="Verify Statistics and Data icon">
+          <span class="label">Verify Statistics and Data</span>
+        </button>
+
+        <button class="thumb" aria-selected="false"
+          data-title="Examine Citations"
+          data-content="If the AI provides citations (URLs, book titles, author names), manually check each one. Do the links work? Do the cited sources actually contain the information the AI claims they do? Are they legitimate publications? If you select Deep Research it will provide you with the citations."
+          data-image="Examine Citations  1.png"> <!-- Added data-image -->
+          <img src="Examine Citations.png" alt="Examine Citations icon">
+          <span class="label">Examine Citations</span>
+        </button>
       </nav>
     </div>
   </div>
+
   <script>
     (function(){
       const panelTitle = document.getElementById('contentTitle');
       const panelBody  = document.getElementById('contentBody');
-      const panelImg   = document.getElementById('contentImage');
+      const contentImage = document.getElementById('contentImage'); // Get reference to the new image element
       const thumbs = Array.from(document.querySelectorAll('.thumb'));
+
       function selectThumb(btn){
+        // Remove selected state from all thumbs
         thumbs.forEach(t => t.setAttribute('aria-selected', 'false'));
+        // Set selected state for the clicked thumb
         btn.setAttribute('aria-selected', 'true');
+        // Update the content panel with the thumb's data
         panelTitle.textContent = btn.dataset.title || '';
-        panelBody.innerHTML = btn.dataset.content || '';
-        if(btn.dataset.below){
-          panelImg.src = btn.dataset.below;
-          panelImg.alt = btn.dataset.title;
-          panelImg.style.display = 'block';
-        }else{
-          panelImg.removeAttribute('src');
-          panelImg.style.display = 'none';
+        panelBody.textContent  = btn.dataset.content || '';
+
+        // Set the image source for the content panel
+        const imageUrl = btn.dataset.image;
+        if (imageUrl) {
+          contentImage.src = imageUrl;
+          contentImage.alt = btn.dataset.title + ' 1'; // Changed alt text here
+          contentImage.style.display = 'block'; // Ensure image is visible
+        } else {
+          contentImage.src = '';
+          contentImage.alt = '';
+          contentImage.style.display = 'none'; // Hide if no image specified
         }
       }
+
+      // Add event listeners to each thumb button
       thumbs.forEach(btn=>{
         btn.addEventListener('click', ()=>selectThumb(btn));
+        btn.addEventListener('keydown', (e)=>{
+          // Allow selection with Enter or Space key
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); // Prevent default scroll for space bar
+            selectThumb(btn);
+          }
+        });
       });
-      // Auto-load the first activity on page load
-      if(thumbs.length > 0){
+
+      // Automatically select the first thumb on page load if any exist
+      if(thumbs.length){
         selectThumb(thumbs[0]);
       }
     })();
